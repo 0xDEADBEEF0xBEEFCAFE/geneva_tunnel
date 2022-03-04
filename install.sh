@@ -8,8 +8,10 @@ script_dir="/opt/geneva_files/geneva_tunnel"
 old_dir="$PWD"
 
 sudo mkdir -p "$geneva_files"
+sudo chown -R "$LOGNAME" "$geneva_files"
 cd .. || exit 1
-sudo mv "$old_dir" "${geneva_files}/geneva_tunnel" >/dev/null 2>&1
+sudo cp -pr "$old_dir"/* "$script_dir"/ >/dev/null 2>&1
+sudo cp -pr "$old_dir"/.* "$script_dir"/ >/dev/null 2>&1
 sudo chown -R "$LOGNAME" "$geneva_files"
 
 show_script() {
