@@ -1,7 +1,5 @@
 #!/bin/sh
 
-set -e
-
 cd $(cd -P -- "$(dirname -- "$0")" && pwd -P)
 geneva_files="/opt/geneva_files"
 script_dir="/opt/geneva_files/geneva_tunnel"
@@ -9,10 +7,12 @@ old_dir="$PWD"
 
 sudo mkdir -p "$geneva_files"
 sudo chown -R "$LOGNAME" "$geneva_files"
-cd .. || exit 1
-sudo cp -pr "$old_dir"/* "$script_dir"/ >/dev/null 2>&1
-sudo cp -pr "$old_dir"/.* "$script_dir"/ >/dev/null 2>&1
+cd "$geneva_files" && rm -rf "geneva_tunnel"
+cd "${old_dir}"/.. || exit 1
+sudo mv "$old_dir" "${geneva_files}"/ >/dev/null 2>&1
 sudo chown -R "$LOGNAME" "$geneva_files"
+
+set -e
 
 show_script() {
   cat <<EOF
