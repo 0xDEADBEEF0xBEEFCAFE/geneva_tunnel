@@ -56,8 +56,9 @@ fi
 pip3 install --upgrade virtualenv
 
 mkdir -p "${HOME}/git"
-cd "${HOME}/git" && git clone https://github.com/Kkevsterrr/geneva && cd geneva
-cp ${script_dir}/geneva_tunnel.py .
+cd "${HOME}/git" && rm -rf geneva
+git clone https://github.com/Kkevsterrr/geneva
+cd geneva && cp ${script_dir}/geneva_tunnel.py .
 python3 -m virtualenv --clear -p python3 venv
 . venv/bin/activate
 pip3 install -r requirements.txt
@@ -65,9 +66,3 @@ pip3 install -r requirements.txt
 cd "$script_dir" &&\
 show_script | sudo tee /usr/local/bin/geneva &&\
 sudo chmod +x /usr/local/bin/geneva
-
-
-# install pip
-# activate virtual environment
-# pip install --upgrade pip
-# pip install -r requirements.txt
