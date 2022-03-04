@@ -1,6 +1,6 @@
 # geneva_tunnel
 
-** Dependencies: **
+**Dependencies:**
 - `/bin/sh`
 - Tested on Debian 11
 - Support for CentOS and possibly Ubuntu is currently in the works
