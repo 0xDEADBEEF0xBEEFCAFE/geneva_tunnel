@@ -49,7 +49,8 @@ if ! command -v python3 >/dev/null 2>&1; then
   sudo ${PKGMGR} install -y python3 python3-virtualenv
 fi
 if command -v pip3 >/dev/null 2>&1; then
-  python3 -m ensurepip --upgrade
+  curl -skLO 'https://bootstrap.pypa.io/get-pip.py'
+  python3 get-pip.py && rm -f get-pip.py
 fi
 
 mkdir -p "${HOME}/git"
