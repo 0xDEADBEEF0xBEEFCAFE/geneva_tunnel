@@ -63,6 +63,5 @@ python3 -m virtualenv --clear -p python3 venv
 . venv/bin/activate
 pip3 install -r requirements.txt
 
-cd "$script_dir" &&\
-show_script | sudo tee /usr/local/bin/geneva >/dev/null 2>&1 &&\
+show_script | sudo tee /usr/local/bin/geneva >/dev/null 2>&1
 sudo chmod +x /usr/local/bin/geneva
