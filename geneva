@@ -226,7 +226,8 @@ class GenevaTunnel:
 		return None
 
 if __name__ == '__main__':
-	#BASEPATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+	if not os.environ['SUDO_USER'] or os.environ['SUDO_USER'] == 'root':
+		print('geneva must be executed via sudo as a non-root user')
 	sys.path.append('/opt/geneva_files/geneva')
 	os.chdir('/opt/geneva_files/geneva')
 	os.popen('/opt/geneva_files/geneva_tunnel/update.sh').read()
@@ -251,11 +252,11 @@ if __name__ == '__main__':
 		sys.exit()
 	if args.command:
 		gt.cli = args.command
-	print(gt.cli)
 	print(Description)
 	user = os.environ['SUDO_USER']
 	if not user or user == 'root':
-		print('This script must be run as root with sudo.')
+		print("This script must be run as root with sudo.")
+		print("Run 'sudo geneva -h' for more information.")
 		sys.exit()
 	try:
 		with engine.Engine(args.ports, args.strategy, log_level=args.loglevel) as eng:
