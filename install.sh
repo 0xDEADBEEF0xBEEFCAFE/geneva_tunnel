@@ -67,3 +67,9 @@ sudo -H python3 -m pip install --upgrade -U git+https://github.com/kti/python-ne
 
 show_script | sudo tee /usr/local/bin/geneva >/dev/null 2>&1
 sudo chmod +x /usr/local/bin/geneva
+
+if [ -f /usr/lib/x86_64-linux-gnu/libc.a ]; then
+  cd /usr/lib/x86_64-linux-gnu && sudo ln -sf libc.a liblibc.a
+elif [ -f /usr/lib64/libc.a ]; then
+  cd /usr/lib64 && sudo ln -sf libc.a liblibc.a
+fi
