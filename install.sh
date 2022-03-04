@@ -61,7 +61,7 @@ mkdir -p "${HOME}/git"
 cd "${HOME}/git" && sudo rm -rf geneva
 git clone https://github.com/Kkevsterrr/geneva
 cd geneva && cp ${script_dir}/geneva_tunnel.py .
-python3 -m virtualenv --clear -p python3.8 venv
+python3 -m virtualenv --clear -p python3 venv
 . venv/bin/activate
 sudo -H -E PATH=$PATH python3 -m pip install -r requirements.txt
 sudo -H -E PATH=$PATH python3 -m pip install --upgrade -U git+https://github.com/kti/python-netfilterqueue
