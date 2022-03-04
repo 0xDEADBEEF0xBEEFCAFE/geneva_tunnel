@@ -19,7 +19,6 @@ script_dir="$(pwd)"
 
 if command -v apt-get >/dev/null 2>&1; then
   PKGMGR='apt-get'
-  ${PKGMGR} update
 elif command -v 'dnf' >/dev/null 2>&1; then
   PKGMGR='dnf'
 elif command -v 'yum' >/dev/null 2>&1; then
@@ -28,6 +27,9 @@ fi
 if ! command -v sudo >/dev/null 2>&1; then
   ${PKGMGR} update
   ${PKGMGR} install -y sudo
+fi
+if [ "$PKGMGR" = "apt-get" ]; then
+  sudo ${PKGMR} update
 fi
 
 sudo ${PKGMGR} install -y git curl firefox build-essential python-dev libnetfilter-queue-dev libffi-dev libssl-dev iptables python3-pip
