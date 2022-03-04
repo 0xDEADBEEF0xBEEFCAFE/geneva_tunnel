@@ -62,7 +62,8 @@ if command -v pip3 >/dev/null 2>&1; then
 fi
 
 cd "$geneva_files" && sudo rm -rf geneva
-git clone https://github.com/Kkevsterrr/geneva
+sudo git clone https://github.com/Kkevsterrr/geneva
+sudo chown -R "$SUDO_USER" "$geneva_files"
 cd geneva && cp ${script_dir}/geneva_tunnel.py .
 sed -i "s/args\[opt\] is ''/args\[opt\] == ''/g" actions/utils.py
 sudo -H python3 -m pip install -r requirements.txt
