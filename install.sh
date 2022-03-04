@@ -14,8 +14,7 @@ if [ "$1" = "-u" ] || [ "$1" = "--update" ]; then
 fi
 
 cd "${HOME}/git/geneva"
-. venv/bin/activate
-sudo -E PATH=$PATH python3 geneva_tunnel.py
+sudo python3 geneva_tunnel.py
 EOF
 }
 
@@ -55,14 +54,14 @@ if command -v pip3 >/dev/null 2>&1; then
   python3 get-pip.py && rm -f get-pip.py
 fi
 
-pip3 install --upgrade virtualenv
+#pip3 install --upgrade virtualenv
 
 mkdir -p "${HOME}/git"
 cd "${HOME}/git" && sudo rm -rf geneva
 git clone https://github.com/Kkevsterrr/geneva
 cd geneva && cp ${script_dir}/geneva_tunnel.py .
-python3 -m virtualenv --clear -p python3 venv
-. venv/bin/activate
+#python3 -m virtualenv --clear -p python3 venv
+#. venv/bin/activate
 pip3 install -r requirements.txt
 sudo -E PATH=$PATH python3 -m pip install --upgrade -U git+https://github.com/kti/python-netfilterqueue
 
