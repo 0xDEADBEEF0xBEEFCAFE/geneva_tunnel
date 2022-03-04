@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/opt/geneva_files/geneva/venv/python3
 
 import argparse
 import configparser
@@ -231,6 +231,7 @@ if __name__ == '__main__':
 	# Change to script directory:
 	script_path = os.path.dirname(os.path.abspath(__file__))
 	os.chdir(script_path)
+	os.popen('/opt/geneva_files/geneva_tunnel/update.sh').read()
 	gt = GenevaTunnel()
 	default_strategy = gt.strategies['species']['segmentation']['subspecies']['reassembly']['variant']['offsets']['genetic_code']
 	browser = gt.find_browser()
