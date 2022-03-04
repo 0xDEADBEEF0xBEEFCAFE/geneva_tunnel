@@ -253,6 +253,7 @@ if __name__ == '__main__':
 		sys.exit()
 	if args.command:
 		gt.cli = args.command
+	print(gt.cli)
 	print(Description)
 	user = os.environ['SUDO_USER']
 	if not user or user == 'root':
