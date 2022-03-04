@@ -54,15 +54,11 @@ if command -v pip3 >/dev/null 2>&1; then
   python3 get-pip.py && rm -f get-pip.py
 fi
 
-#pip3 install --upgrade virtualenv
-
 mkdir -p "${HOME}/git"
 cd "${HOME}/git" && sudo rm -rf geneva
 git clone https://github.com/Kkevsterrr/geneva
 cd geneva && cp ${script_dir}/geneva_tunnel.py .
 sed -i "s/args\[opt\] is ''/args\[opt\] == ''/g" actions/utils.py
-#python3 -m virtualenv --clear -p python3 venv
-#. venv/bin/activate
 sudo -H python3 -m pip install -r requirements.txt
 sudo -H python3 -m pip install --upgrade -U git+https://github.com/kti/python-netfilterqueue
 
