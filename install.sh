@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 cd $(cd -P -- "$(dirname -- "$0")" && pwd -P)
 
 show_script() {
@@ -45,7 +47,7 @@ mkdir -p "${HOME}/git"
 cd "${HOME}/git" && git clone https://github.com/Kkevsterrr/geneva && cd geneva
 cp ${script_dir}/geneva_tunnel.py .
 python3 -m virtualenv --clear -p python3 venv
-source venv/bin/activate
+. venv/bin/activate
 pip3 install -r requirements.txt
 
 cd "$script_dir" &&\
