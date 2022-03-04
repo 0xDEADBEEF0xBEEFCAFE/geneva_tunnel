@@ -10,6 +10,10 @@ from pathlib import Path
 
 import engine
 
+if not os.environ['SUDO_USER'] or os.environ['SUDO_USER'] == 'root':
+	print('geneva must be executed via sudo as a non-root user')
+	sys.exit()
+
 Description = """GENEVA TUNNEL
 """
 
@@ -226,8 +230,6 @@ class GenevaTunnel:
 		return None
 
 if __name__ == '__main__':
-	if not os.environ['SUDO_USER'] or os.environ['SUDO_USER'] == 'root':
-		print('geneva must be executed via sudo as a non-root user')
 	sys.path.append('/opt/geneva_files/geneva')
 	os.chdir('/opt/geneva_files/geneva')
 	os.popen('/opt/geneva_files/geneva_tunnel/update.sh').read()
