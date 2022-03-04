@@ -13,7 +13,9 @@ if [ "$1" = "-u" ] || [ "$1" = "--update" ]; then
   exit
 fi
 
-sudo ${HOME}/git/geneva/venv/bin/python3 ${HOME}/git/geneva/geneva_tunnel.py
+cd "${HOME}/git/geneva"
+. venv/bin/activate
+sudo -E PATH=$PATH python3 geneva_tunnel.py
 EOF
 }
 
