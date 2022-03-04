@@ -31,7 +31,7 @@ if ! command -v sudo >/dev/null 2>&1; then
   ${PKGMGR} install -y sudo
 fi
 if [ "$PKGMGR" = "apt-get" ]; then
-  sudo ${PKGMR} update
+  sudo ${PKGMGR} update
 fi
 
 sudo ${PKGMGR} install -y git curl firefox build-essential python-dev libnetfilter-queue-dev libffi-dev libssl-dev iptables python3-pip
