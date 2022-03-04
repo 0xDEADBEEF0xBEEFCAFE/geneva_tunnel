@@ -10,7 +10,11 @@ from pathlib import Path
 
 import engine
 
-if not os.environ['SUDO_USER'] or os.environ['SUDO_USER'] == 'root':
+try:
+	if not os.environ['SUDO_USER'] or os.environ['SUDO_USER'] == 'root':
+		print('geneva must be executed via sudo as a non-root user')
+		sys.exit()
+except KeyError:
 	print('geneva must be executed via sudo as a non-root user')
 	sys.exit()
 
