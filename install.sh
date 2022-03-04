@@ -9,7 +9,8 @@ old_dir="$PWD"
 
 sudo mkdir -p "$geneva_files"
 cd .. || exit 1
-sudo mv "$old_dir" "$geneva_files"/
+sudo rm -rf "${geneva_files}/geneva_tunnel"
+sudo mv "$old_dir" "$script_dir"
 sudo chown -R "$SUDO_USER" "$geneva_files"
 
 show_script() {
