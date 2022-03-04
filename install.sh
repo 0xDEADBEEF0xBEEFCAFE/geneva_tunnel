@@ -9,9 +9,8 @@ old_dir="$PWD"
 
 sudo mkdir -p "$geneva_files"
 cd .. || exit 1
-sudo rm -rf "${geneva_files}/geneva_tunnel"
-sudo mv "$old_dir" "${geneva_files}/geneva_tunnel"
-sudo chown -R "$SUDO_USER" "$geneva_files"
+sudo mv "$old_dir" "${geneva_files}/geneva_tunnel" >/dev/null 2>&1
+sudo chown -R "$LOGNAME" "$geneva_files"
 
 show_script() {
   cat <<EOF
@@ -64,7 +63,7 @@ fi
 
 cd "$geneva_files" && sudo rm -rf geneva
 sudo git clone https://github.com/Kkevsterrr/geneva
-sudo chown -R "$SUDO_USER" "$geneva_files"
+sudo chown -R "$LOGNAME" "$geneva_files"
 cd geneva && cp ${script_dir}/geneva_tunnel.py .
 sed -i "s/args\[opt\] is ''/args\[opt\] == ''/g" actions/utils.py
 sudo -H python3 -m pip install -r requirements.txt
@@ -79,7 +78,7 @@ elif [ -f /usr/lib64/libc.a ]; then
   cd /usr/lib64 && sudo ln -sf libc.a liblibc.a
 fi
 
-sudo chown -R "$SUDO_USER" "$geneva_files"
+sudo chown -R "$LOGNAME" "$geneva_files"
 
 echo "Installation finished."
 echo "See usage by running 'geneva -h'"
