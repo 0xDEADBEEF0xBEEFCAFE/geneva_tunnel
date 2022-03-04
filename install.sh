@@ -16,7 +16,7 @@ show_script() {
   cat <<EOF
 #!/bin/sh
 
-cd "$script_dir" || exit 1
+cd "${geneva_files}/geneva" || exit 1
 
 if [ "$1" = "-u" ] || [ "$1" = "--update" ]; then
   ./update.sh
