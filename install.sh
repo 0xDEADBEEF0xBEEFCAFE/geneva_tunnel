@@ -56,8 +56,8 @@ sudo -H python3 -m pip install -r requirements.txt
 sudo -H python3 -m pip install --upgrade -U git+https://github.com/kti/python-netfilterqueue
 
 set +e
-rm -rf /usr/local/bin/geneva
-cd /usr/local/bin && ln -sf /opt/geneva_files/geneva/geneva
+sudo rm -rf /usr/local/bin/geneva
+cd /usr/local/bin && sudo ln -sf /opt/geneva_files/geneva/geneva
 sudo chmod +x /usr/local/bin/geneva
 set -e
 
