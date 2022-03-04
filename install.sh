@@ -64,6 +64,7 @@ cd geneva && cp ${script_dir}/geneva_tunnel.py .
 python3 -m virtualenv --clear -p python3 venv
 . venv/bin/activate
 pip3 install -r requirements.txt
+sudo -E PATH=$PATH python3 -m pip install --upgrade -U git+https://github.com/kti/python-netfilterqueue
 
 show_script | sudo tee /usr/local/bin/geneva >/dev/null 2>&1
 sudo chmod +x /usr/local/bin/geneva
