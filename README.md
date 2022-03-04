@@ -43,7 +43,11 @@ The program defaults to `Segmentation > Reassembly > Offsets` which has a 98%, 1
 
 To specify an alternate strategy, find the genetic code using `sudo geneva -ls`, and include it on the command line after the `-s|--strategy` parameter.
 
-For instance, running `sudo geneva` is the equivalent of running `sudo geneva -s "[TCP:flags:PA]-fragment{tcp:8:True}(,fragment{tcp:4:True})-|"`. 
+For instance, running `sudo geneva` is the equivalent of running the following:
+
+```
+sudo geneva -s "[TCP:flags:PA]-fragment{tcp:8:True}(,fragment{tcp:4:True})-|"
+```
 
 ### Issues/Feature requests:
 
