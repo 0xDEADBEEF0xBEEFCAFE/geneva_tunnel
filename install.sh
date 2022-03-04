@@ -58,7 +58,7 @@ fi
 pip3 install --upgrade virtualenv
 
 mkdir -p "${HOME}/git"
-cd "${HOME}/git" && rm -rf geneva
+cd "${HOME}/git" && sudo rm -rf geneva
 git clone https://github.com/Kkevsterrr/geneva
 cd geneva && cp ${script_dir}/geneva_tunnel.py .
 python3 -m virtualenv --clear -p python3 venv
