@@ -3,29 +3,36 @@
 set -e
 
 cd $(cd -P -- "$(dirname -- "$0")" && pwd -P)
+geneva_files="/opt/geneva_files"
+script_dir="/opt/geneva_files/geneva_tunnel"
+old_dir="$PWD"
+
+mkdir -p "$geneva_files"
+cd .. || exit 1
+mv "old_dir" "$geneva_files"/
+sudo chown -R "$SUDO_USER" "$geneva_files"
 
 show_script() {
   cat <<EOF
 #!/bin/sh
 
+cd "$script_dir" || exit 1
+
 if [ "$1" = "-u" ] || [ "$1" = "--update" ]; then
-  ${PWD}/update.sh
+  ./update.sh
   exit
 fi
 
-cd "${HOME}/git/geneva"
 sudo -H python3 geneva_tunnel.py \${@}
 EOF
 }
 
-script_dir="$(pwd)"
-
 if command -v apt-get >/dev/null 2>&1; then
-  PKGMGR='apt-get'
+  PKGMGR="apt-get"
 elif command -v 'dnf' >/dev/null 2>&1; then
-  PKGMGR='dnf'
+  PKGMGR="dnf"
 elif command -v 'yum' >/dev/null 2>&1; then
-  PKGMGR='yum'
+  PKGMGR="yum"
 fi
 if ! command -v sudo >/dev/null 2>&1; then
   ${PKGMGR} update
@@ -54,8 +61,7 @@ if command -v pip3 >/dev/null 2>&1; then
   python3 get-pip.py && rm -f get-pip.py
 fi
 
-mkdir -p "${HOME}/git"
-cd "${HOME}/git" && sudo rm -rf geneva
+cd "$geneva_files" && sudo rm -rf geneva
 git clone https://github.com/Kkevsterrr/geneva
 cd geneva && cp ${script_dir}/geneva_tunnel.py .
 sed -i "s/args\[opt\] is ''/args\[opt\] == ''/g" actions/utils.py
@@ -70,3 +76,8 @@ if [ -f /usr/lib/x86_64-linux-gnu/libc.a ]; then
 elif [ -f /usr/lib64/libc.a ]; then
   cd /usr/lib64 && sudo ln -sf libc.a liblibc.a
 fi
+
+sudo chown -R "$SUDO_USER" "$geneva_files"
+
+echo "Installation finished."
+echo "See usage by running 'geneva -h'"
