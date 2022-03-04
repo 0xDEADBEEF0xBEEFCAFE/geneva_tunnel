@@ -14,8 +14,7 @@ if [ "$1" = "-u" ] || [ "$1" = "--update" ]; then
 fi
 
 cd "${HOME}/git/geneva"
-. venv/bin/activate
-sudo -H -E PATH=$PATH python3 geneva_tunnel.py \${@}
+sudo -H python3 geneva_tunnel.py \${@}
 EOF
 }
 
@@ -62,10 +61,10 @@ cd "${HOME}/git" && sudo rm -rf geneva
 git clone https://github.com/Kkevsterrr/geneva
 cd geneva && cp ${script_dir}/geneva_tunnel.py .
 sed -i "s/args\[opt\] is ''/args\[opt\] == ''/g" actions/utils.py
-python3 -m virtualenv --clear -p python3 venv
-. venv/bin/activate
-sudo -H -E PATH=$PATH python3 -m pip install -r requirements.txt
-sudo -H -E PATH=$PATH python3 -m pip install --upgrade -U git+https://github.com/kti/python-netfilterqueue
+#python3 -m virtualenv --clear -p python3 venv
+#. venv/bin/activate
+sudo -H python3 -m pip install -r requirements.txt
+sudo -H python3 -m pip install --upgrade -U git+https://github.com/kti/python-netfilterqueue
 
 show_script | sudo tee /usr/local/bin/geneva >/dev/null 2>&1
 sudo chmod +x /usr/local/bin/geneva
