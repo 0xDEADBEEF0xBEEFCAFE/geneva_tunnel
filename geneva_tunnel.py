@@ -1,0 +1,267 @@
+#!/usr/bin/env python3
+
+import argparse
+import configparser
+import json
+import os
+import sys
+import shutil
+from pathlib import Path
+
+import engine
+
+Description = """Geneva Browser vC - Chrome-Based Geneva Browser
+"""
+
+class GenevaTunnel:
+	def __init__(self):
+		self.cli = 'curl https://www.google.com/'
+		self.ports = '80,443'
+		self.strategies = {
+			'species': {
+				'none': {
+					'subspecies': {
+						'none': {
+							'variant': {
+								'none': {
+									'genetic_code': "\/",
+									'success_rate:': {'cn': 3, 'in': 0, 'kz': 0}
+								}
+							}
+						}
+					}
+				},
+				'tcb_desync': {
+					'subspecies': {
+						'inc_dataofs': {
+							'variant': {
+								'corrupt_checksum': {
+									'genetic_code': "[TCP:flags:PA]-duplicate(tamper{TCP:dataofs:replace:10}(tamper{TCP:chksum:corrupt},),)-|",
+									'success_rate': {'cn': 98, 'in': 0, 'kz': 100}
+								},
+								'small_ttl': {
+									'genetic_code': "[TCP:flags:PA]-duplicate(tamper{TCP:dataofs:replace:10}(tamper{IP:ttl:replace:10},),)-||",
+									'success_rate': {'cn': 98, 'in': 0, 'kz': 100}
+								},
+								'invalid_flags': {
+									'genetic_code': "[TCP:flags:PA]-duplicate(tamper{TCP:dataofs:replace:10}(tamper{TCP:flags:replace:FRAPUN},),)-|",
+									'success_rate': {'cn': 26, 'in': 0, 'kz': 100}
+								},
+								'corrupt_ack': {
+									'genetic_code': "[TCP:flags:PA]-duplicate(tamper{TCP:dataofs:replace:10}(tamper{TCP:ack:corrupt},),)-|",
+									'success_rate': {'cn': 94, 'in': 0, 'kz': 100}
+								},
+								'corrupt_wscale': {
+									'genetic_code': "[TCP:flags:PA]-duplicate(tamper{TCP:options-wscale:corrupt}(tamper{TCP:dataofs:replace:8},),)-|",
+									'success_rate': {'cn': 98, 'in': 0, 'kz': 100}
+								}
+							}
+						},
+						'inv_payload': {
+							'variant': {
+								'corrupt_checksum': {
+									'genetic_code': "[TCP:flags:PA]-duplicate(tamper{TCP:load:corrupt}(tamper{TCP:chksum:corrupt},),)-|",
+									'success_rate': {'cn': 80, 'in': 0, 'kz': 100}
+								},
+								'small_ttl': {
+									'genetic_code': "[TCP:flags:PA]-duplicate(tamper{TCP:load:corrupt}(tamper{IP:ttl:replace:8},),)-|",
+									'success_rate': {'cn': 98, 'in': 0, 'kz': 100}
+								},
+								'corrupt_ack': {
+									'genetic_code': "[TCP:flags:PA]-duplicate(tamper{TCP:load:corrupt}(tamper{TCP:ack:corrupt},),)-|",
+									'success_rate': {'cn': 87, 'in': 0, 'kz': 100}
+								}
+							}
+						},
+						'simple': {
+							'variant': {
+								'payload_syn': {
+									'genetic_code': "[TCP:flags:S]-duplicate(,tamper{TCP:load:corrupt})-|",
+									'success_rate': {'cn': 3, 'in': 0, 'kz': 100}
+								}
+							}
+						},
+						'stutter_request': {
+							'variant': {
+								'stutter_request': {
+									'genetic_code': "[TCP:flags:PA]-duplicate(tamper{IP:len:replace:64},)-|",
+									'success_rate': {'cn': 3, 'in': 100, 'kz': 0}
+								}
+							}
+						}
+					}
+				},
+				'tcb_teardown': {
+					'subspecies': {
+						'with_rst': {
+							'variant': {
+								'corrupt_checksum': {
+									'genetic_code': "[TCP:flags:A]-duplicate(,tamper{TCP:flags:replace:R}(tamper{TCP:chksum:corrupt},))-|",
+									'success_rate': {'cn': 95, 'in': 0, 'kz': 0}
+								},
+								'small_ttl': {
+									'genetic_code': "[TCP:flags:A]-duplicate(,tamper{TCP:flags:replace:R}(tamper{IP:ttl:replace:10},))-|",
+									'success_rate': {'cn': 87, 'in': 0, 'kz': 0}
+								},
+								'inv_md5header': {
+									'genetic_code': "[TCP:flags:A]-duplicate(,tamper{TCP:options-md5header:corrupt}(tamper{TCP:flags:replace:R},))-|",
+									'success_rate': {'cn': 86, 'in': 0, 'kz': 0}
+								}
+							}
+						},
+						'with_rst_ack': {
+							'variant': {
+								'corrupt_checksum': {
+									'genetic_code': "[TCP:flags:A]-duplicate(,tamper{TCP:flags:replace:RA}(tamper{TCP:chksum:corrupt},))-|",
+									'success_rate': {'cn': 80, 'in': 0, 'kz': 0}
+								},
+								'small_ttl': {
+									'genetic_code': "[TCP:flags:A]-duplicate(,tamper{TCP:flags:replace:RA}(tamper{IP:ttl:replace:10},))-|",
+									'success_rate': {'cn': 94, 'in': 0, 'kz': 0}
+								},
+								'inv_md5header': {
+									'genetic_code': "[TCP:flags:A]-duplicate(tamper{TCP:options-md5header:corrupt}(tamper{TCP:flags:replace:R},),)-|",
+									'success_rate': {'cn': 48, 'in': 0, 'kz': 0}
+								},
+								'corrupt_ack': {
+									'genetic_code': "[TCP:flags:A]-duplicate(tamper{TCP:flags:replace:RA}(tamper{TCP:ack:corrupt},),)-|",
+									'success_rate': {'cn': 43, 'in': 0, 'kz': 0}
+								}
+							}
+						},
+						'invalid_flags': {
+							'variant': {
+								'corrupt_checksum': {
+									'genetic_code': "[TCP:flags:A]-duplicate(,tamper{TCP:flags:replace:FRAPUEN}(tamper{TCP:chksum:corrupt},))-|",
+									'success_rate': {'cn': 89, 'in': 0, 'kz': 0}
+								},
+								'small_ttl': {
+									'genetic_code': "[TCP:flags:A]-duplicate(,tamper{TCP:flags:replace:FREACN}(tamper{IP:ttl:replace:10},))-|",
+									'success_rate': {'cn': 96, 'in': 0, 'kz': 0}
+								},
+								'inv_md5header': {
+									'genetic_code': "[TCP:flags:A]-duplicate(,tamper{TCP:flags:replace:FRAPUN}(tamper{TCP:options-md5header:corrupt},))-|",
+									'success_rate': {'cn': 94, 'in': 0, 'kz': 0}
+								}
+							}
+						}
+					}
+				},
+				'segmentation': {
+					'subspecies': {
+						'with_ack': {
+							'variant': {
+								'offsets': {
+									'genetic_code': "[TCP:flags:PA]-fragment{tcp:8:False}-|[TCP:flags:A]-tamper{TCP:seq:corrupt}-|",
+									'success_rate': {'cn': 94, 'in': 100, 'kz': 100}
+								}
+							}
+						},
+						'reassembly': {
+							'variant': {
+								'offsets': {
+									'genetic_code': "[TCP:flags:PA]-fragment{tcp:8:True}(,fragment{tcp:4:True})-|",
+									'success_rate': {'cn': 98, 'in': 100, 'kz': 100}
+								}
+							}
+						},
+						'simple': {
+							'variant': {
+								'in_order': {
+									'genetic_code': "[TCP:flags:PA]-fragment{tcp:-1:True}-|",
+									'success_rate': {'cn': 3, 'in': 100, 'kz': 100}
+								}
+							}
+						}
+					}
+				},
+				'hybrid': {
+					'subspecies': {
+						'with_fin': {
+							'variant': {
+								'cut_header': {
+									'genetic_code': "[TCP:flags:PA]-duplicate(tamper{TCP:flags:replace:F}(tamper{IP:len:replace:78},),)-|",
+									'success_rate': {'cn': 53, 'in': 100, 'kz': 0}
+								}
+							}
+						}
+					}
+				},
+				'tcb_turnaround': {
+					'subspecies': {
+						'tcb_turnaround': {
+							'variant': {
+								'tcb_turnaround': {
+									'genetic_code': "[TCP:flags:S]-duplicate(tamper{TCP:flags:replace:SA},)-|",
+									'success_rate': {'cn': 3, 'in': 0, 'kz': 100}
+								}
+							}
+						}
+					}
+				},
+				'invalid_options': {
+					'subspecies': {
+						'invalid_options': {
+							'variant': {
+								'corrupt_uto': {
+									'genetic_code': "[TCP:flags:PA]-tamper{TCP:options-uto:corrupt}-|",
+									'success_rate': {'cn': 3, 'in': 100, 'kz': 0}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+	def list_strategies(self):
+		strategies = json.dumps(self.strategies, indent=2)
+		return strategies
+
+	@staticmethod
+	def find_browser() -> str:
+		for program in ['firefox-esr', 'firefox', 'google-chrome-stable', 'google-chrome', 'chromium']:
+			if shutil.which(program):
+				return program
+		return None
+
+if __name__ == '__main__':
+	BASEPATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+	sys.path.append(BASEPATH)
+	# Change to script directory:
+	script_path = os.path.dirname(os.path.abspath(__file__))
+	os.chdir(script_path)
+	gt = GenevaTunnel()
+	default_strategy = gt.strategies['species']['segmentation']['subspecies']['reassembly']['variant']['offsets']['genetic_code']
+	browser = gt.find_browser()
+	if browser:
+		gt.cli = f"su -c 'DISPLAY=:0 {browser}' - $SUDO_USER"
+	# Parse Arguments:
+	arguments = None
+	if sys.argv[1:]:
+		arguments = sys.argv[1:]
+	parser = argparse.ArgumentParser(description=Description, formatter_class=argparse.RawDescriptionHelpFormatter)
+	parser.add_argument('-c', '--command', help="Command to run through Geneva", default=gt.cli)
+	parser.add_argument('-l', '--loglevel', help="Log level [debug|info|warning|error]", default="info")
+	parser.add_argument('-ls', '--list', help="List Geneva strategies (JSON)", action="store_true", default=False)
+	parser.add_argument('-p', '--ports', help="Destination port(s) for Geneva to modify traffic", default=gt.ports)
+	parser.add_argument('-s', '--strategy', help="Geneva strategy to use (incomplete)", default=default_strategy)
+	args = parser.parse_args(arguments)
+	#utils = Utils()
+	if args.list:
+		print(gt.list_strategies())
+		sys.exit()
+	print(Description)
+	user = os.environ['SUDO_USER']
+	if not user or user == 'root':
+		print('This script must be run as root with sudo.')
+		sys.exit()
+	try:
+		with engine.Engine(args.ports, args.strategy, log_level=args.loglevel) as eng:
+			os.system(args.command)
+	except KeyboardInterrupt:
+		print("Caught KeyboardInterrupt. Exiting...")
+		sys.exit()
+
+
+
