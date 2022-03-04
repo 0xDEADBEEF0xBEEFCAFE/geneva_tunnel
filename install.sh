@@ -7,7 +7,7 @@ geneva_files="/opt/geneva_files"
 script_dir="/opt/geneva_files/geneva_tunnel"
 old_dir="$PWD"
 
-mkdir -p "$geneva_files"
+sudo mkdir -p "$geneva_files"
 cd .. || exit 1
 mv "old_dir" "$geneva_files"/
 sudo chown -R "$SUDO_USER" "$geneva_files"
