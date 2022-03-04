@@ -1,4 +1,4 @@
-#!/opt/geneva_files/geneva/venv/python3
+#!/opt/geneva_files/geneva/venv/bin/python3
 
 import argparse
 import configparser
