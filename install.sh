@@ -46,12 +46,14 @@ if [ -z $FIREFOX ]; then
 fi
 
 if ! command -v python3 >/dev/null 2>&1; then
-  sudo ${PKGMGR} install -y python3 python3-virtualenv
+  sudo ${PKGMGR} install -y python3
 fi
 if command -v pip3 >/dev/null 2>&1; then
   curl -skLO 'https://bootstrap.pypa.io/get-pip.py'
   python3 get-pip.py && rm -f get-pip.py
 fi
+
+pip3 install --upgrade virtualenv
 
 mkdir -p "${HOME}/git"
 cd "${HOME}/git" && git clone https://github.com/Kkevsterrr/geneva && cd geneva
