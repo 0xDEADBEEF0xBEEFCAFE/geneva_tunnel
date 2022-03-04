@@ -12,10 +12,10 @@ import engine
 
 try:
 	if not os.environ['SUDO_USER'] or os.environ['SUDO_USER'] == 'root':
-		print('geneva must be executed via sudo as a non-root user')
+		print('geneva must be executed via sudo as a non-root user.')
 		sys.exit()
 except KeyError:
-	print('geneva must be executed via sudo as a non-root user')
+	print('geneva must be executed via sudo as a non-root user.')
 	sys.exit()
 
 Description = """GENEVA TUNNEL
