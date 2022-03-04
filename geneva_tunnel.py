@@ -251,6 +251,8 @@ if __name__ == '__main__':
 	if args.list:
 		print(gt.list_strategies())
 		sys.exit()
+	if args.command:
+		gt.cli = args.command
 	print(Description)
 	user = os.environ['SUDO_USER']
 	if not user or user == 'root':
