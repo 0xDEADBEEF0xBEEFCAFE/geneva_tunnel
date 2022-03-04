@@ -8,9 +8,7 @@ old_dir="$PWD"
 sudo mkdir -p "$geneva_files"
 sudo chown -R "$LOGNAME" "$geneva_files"
 cd "$geneva_files" && rm -rf "geneva_tunnel"
-cd "${old_dir}"/.. || exit 1
-sudo mv "$old_dir" "${geneva_files}"/ >/dev/null 2>&1
-sudo chown -R "$LOGNAME" "$geneva_files"
+git clone https://github.com/0xdeadbeef0xbeefcafe/geneva_tunnel
 
 set -e
 
@@ -64,8 +62,7 @@ if command -v pip3 >/dev/null 2>&1; then
 fi
 
 cd "$geneva_files" && sudo rm -rf geneva
-sudo git clone https://github.com/Kkevsterrr/geneva
-sudo chown -R "$LOGNAME" "$geneva_files"
+git clone https://github.com/Kkevsterrr/geneva
 cd geneva && cp ${script_dir}/geneva_tunnel.py .
 sed -i "s/args\[opt\] is ''/args\[opt\] == ''/g" actions/utils.py
 sudo -H python3 -m pip install -r requirements.txt
