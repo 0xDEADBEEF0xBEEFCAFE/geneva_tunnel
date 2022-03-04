@@ -82,5 +82,6 @@ fi
 
 sudo chown -R "$LOGNAME" "$geneva_files"
 
+echo
 echo "Installation finished."
 echo "See usage by running 'geneva -h'"
