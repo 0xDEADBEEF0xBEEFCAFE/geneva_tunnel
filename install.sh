@@ -34,7 +34,16 @@ if [ "$PKGMGR" = "apt-get" ]; then
   sudo ${PKGMGR} update
 fi
 
-sudo ${PKGMGR} install -y git curl firefox build-essential python-dev libnetfilter-queue-dev libffi-dev libssl-dev iptables python3-pip
+sudo ${PKGMGR} install -y git curl build-essential python3-dev libnetfilter-queue-dev libffi-dev libssl-dev iptables python3-pip
+
+if command -v firefox >/dev/null 2>&1; then
+  FIREFOX=1
+fi
+if [ -z $FIREFOX ]; then
+  if ! command -v firefox-esr >/dev/null 2>&1; then
+    sudo ${PKGMGR} install -y firefox-esr
+  fi
+fi
 
 if ! command -v python3 >/dev/null 2>&1; then
   sudo ${PKGMGR} install -y python3 python3-virtualenv
