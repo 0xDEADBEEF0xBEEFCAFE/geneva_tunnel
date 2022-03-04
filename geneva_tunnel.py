@@ -10,7 +10,7 @@ from pathlib import Path
 
 import engine
 
-Description = """Geneva Browser vC - Chrome-Based Geneva Browser
+Description = """GENEVA TUNNEL
 """
 
 class GenevaTunnel:
