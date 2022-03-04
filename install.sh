@@ -55,8 +55,11 @@ sed -i "s/args\[opt\] is ''/args\[opt\] == ''/g" actions/utils.py
 sudo -H python3 -m pip install -r requirements.txt
 sudo -H python3 -m pip install --upgrade -U git+https://github.com/kti/python-netfilterqueue
 
-cd /usr/local/bin && ln -sf /opt/geneva_files/geneva/geneva >/dev/null 2>&1
+set +e
+rm -rf /usr/local/bin/geneva
+cd /usr/local/bin && ln -sf /opt/geneva_files/geneva/geneva
 sudo chmod +x /usr/local/bin/geneva
+set -e
 
 if [ -f /usr/lib/x86_64-linux-gnu/libc.a ]; then
   cd /usr/lib/x86_64-linux-gnu && sudo ln -sf libc.a liblibc.a
